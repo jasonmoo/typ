@@ -1,0 +1,4 @@
+typ
+===
+
+typ faster
