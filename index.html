@@ -7,25 +7,58 @@
 		body { background: black; color:white; font-family: 'Open Sans', sans-serif; }
 		#keyboard, #hud { position:fixed; top:10px; left:50%; margin-left:-400px; width:800px; height: 398px; z-index: 10; }
 		#hud { z-index: 20;	}
-		#report {
-			position:fixed; top:450px; left:50%; margin-left: -400px;
-			width:800; height:100px; background:rgba(100,100,100,.2);
-			text-align: right; overflow: hidden;
+		#reports {
+			margin-top:500px;
 		}
-		.ball { background-color:blue; border-radius: 300px; display:inline-block; }
-		.space { background-color:rgba(1,1,1,0.2); display:inline-block; }
+		#reports div {
+			margin:0 auto;
+			text-align: center;
+			position: relative;
+			min-height: 100px;
+		}
+		#reports div > span {
+			position: absolute;
+			font-size:22px;
+			border-radius: 500px;
+			background-color: rgba(0,0,255,.4);
+			top:30px;
+		}
+		#reports div > span > span {
+			display:block;
+			font-size:10px;
+			color:rgba(255,255,255,.7);
+			padding: 4px; marign-top:4px;
+			background-color: rgba(0,0,0,.3);
+		}
+		footer {
+			display:block; position:absolute;
+			bottom: 5px; right:10px;
+			margin-top:-100px;
+			font-size: 14px;
+			opacity: .2;
+		}
+		footer a {
+			text-decoration: none;
+			color:inherit;
+		}
 	</style>
 </head>
 <body>
 	<canvas id="hud" width="800" height="398"></canvas>
 	<img id="keyboard" src="keybard_blk.jpg" />
-	<div id="report"></div>
+	<div id="reports"></div>
+	<footer>
+		<a href="https://github.com/jasonmoo/typ">typ</a>,
+		<script>document.write((new Date).getFullYear())</script>,
+		<a href="http://opensource.org/licenses/MIT">MIT</a>
+	</footer>
 </body>
 <script>
 
-	var report = document.getElementById("report"),
+	var	reports = document.getElementById("reports"),
 		hud_canvas = document.getElementById("hud"),
 		hud = hud_canvas.getContext("2d"),
+		footer = document.getElementsByTagName("footer")[0],
 		events = [], r = 8;
 
 	var keys = {
@@ -70,26 +103,25 @@
 				switch (e.location) {
 					case 1:	return "L"+e.keyIdentifier;
 					case 0:	return "R"+e.keyIdentifier;
+					default: break;
 				}
 			case "Shift":
 			case "Alt":
 				switch (e.location) {
 					case 1:	return "L"+e.keyIdentifier;
 					case 2:	return "R"+e.keyIdentifier;
+					default: break;
 				}
 		}
 		return e.keyIdentifier;
-	}
-
-	function decode_identifier(e) {
-		return String.fromCharCode(parseInt(e.keyIdentifier.replace("U+",""), 16));
 	}
 
 	function capture_key_event(e) {
 		events.push({
 			type: e.type,
 			id:   get_identifier(e),
-			c:    decode_identifier(e),
+			c:    String.fromCharCode(e.which),
+			utf:  e.keyIdentifier,
 			mark: performance.now()
 		});
 		clearTimeout(update.timeout);
@@ -97,7 +129,43 @@
 	}
 
 	function update() {
-		console.log(events);
+
+		var offset = events[0].mark,
+			total_time = events[events.length-1].mark - offset
+			letters = "", report = document.createElement("div");
+
+		report.style.width = total_time + "px";
+
+		for (var i = 0; i < events.length; i++) {
+			if (events[i].type === "keydown") {
+				var start = events[i];
+				letters += start.c;
+				for (var j = i+1; j < events.length; j++) {
+					if (start.c === events[j].c && events[j].type === "keyup") {
+						var end = events[j],
+							total = (end.mark - start.mark).toFixed(2);
+
+						var node = document.createElement('span');
+						node.innerHTML = (start.c || start.utf || "&nbsp;") + "<span>" + (total) + "ms</span>";
+						node.style.zIndex = i;
+						node.style.left = start.mark-offset + "px";
+						node.style.padding = total/2 + "px";
+
+						report.appendChild(node);
+
+						break;
+					}
+				}
+
+			}
+		}
+
+		var head = document.createElement("span");
+		head.innerHTML = letters + "<br>" + total_time.toFixed(2) + "ms total<br>";
+		report.appendChild(head);
+
+		reports.appendChild(report);
+
 		events = [];
 	}
 
@@ -105,10 +173,6 @@
 	window.addEventListener("keydown", mark_dot);
 	window.addEventListener("keyup", capture_key_event);
 	window.addEventListener("keyup", clear_dot);
-
-	// hud_canvas.addEventListener("click", function (e) {
-	// 	console.log(JSON.stringify([e.offsetX, e.offsetY]));
-	// })
 
 </script>
 </html>
