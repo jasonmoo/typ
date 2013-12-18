@@ -5,23 +5,26 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<style>
 		body { background: black; color:white; font-family: 'Open Sans', sans-serif; }
-		#keyboard, #hud { position:fixed; top:10px; left:50%; margin-left:-400px; width:800px; height: 398px; z-index: 10; }
+		#keyboard, #hud { position:fixed; top:10px; left:50%; margin-left:-400px; width:800px; height: 398px; z-index: 1000; }
 		#hud { z-index: 20;	}
 		#reports {
-			margin-top:500px;
+			margin-top:429px;
 		}
 		#reports div {
-			margin:0 auto;
+			margin:150px auto;
 			text-align: center;
 			position: relative;
 			min-height: 100px;
+		}
+		#reports div > div {
+			font-size:22px;
 		}
 		#reports div > span {
 			position: absolute;
 			font-size:22px;
 			border-radius: 500px;
 			background-color: rgba(0,0,255,.4);
-			top:30px;
+			top:70px;
 		}
 		#reports div > span > span {
 			display:block;
@@ -31,7 +34,7 @@
 			background-color: rgba(0,0,0,.3);
 		}
 		footer {
-			display:block; position:absolute;
+			display:block; position:fixed;
 			bottom: 5px; right:10px;
 			margin-top:-100px;
 			font-size: 14px;
@@ -117,6 +120,10 @@
 	}
 
 	function capture_key_event(e) {
+		// preserve meta actions
+		if (e.metaKey === false) {
+			e.preventDefault();
+		}
 		events.push({
 			type: e.type,
 			id:   get_identifier(e),
@@ -132,7 +139,8 @@
 
 		var offset = events[0].mark,
 			total_time = events[events.length-1].mark - offset
-			letters = "", report = document.createElement("div");
+			letters = "", 
+			report = document.createElement("div");
 
 		report.style.width = total_time + "px";
 
@@ -156,15 +164,20 @@
 						break;
 					}
 				}
-
 			}
 		}
 
-		var head = document.createElement("span");
-		head.innerHTML = letters + "<br>" + total_time.toFixed(2) + "ms total<br>";
-		report.appendChild(head);
-
-		reports.appendChild(report);
+		if (report.childNodes.length > 0) {
+			var head = document.createElement("div");
+			head.innerHTML = letters + "<br>" + total_time.toFixed(2) + "ms&nbsp;total<br>";
+			report.appendChild(head);
+			window.scroll(0);
+			if (reports.childNodes.length > 0) {
+				reports.insertBefore(report, reports.firstChild);
+			} else {
+				reports.appendChild(report);
+			}
+		}
 
 		events = [];
 	}
