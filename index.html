@@ -139,7 +139,7 @@
 
 		var offset = events[0].mark,
 			total_time = events[events.length-1].mark - offset
-			letters = "", 
+			letters = "",
 			report = document.createElement("div");
 
 		report.style.width = total_time + "px";
@@ -171,7 +171,7 @@
 			var head = document.createElement("div");
 			head.innerHTML = letters + "<br>" + total_time.toFixed(2) + "ms&nbsp;total<br>";
 			report.appendChild(head);
-			window.scroll(0);
+			window.scroll(0,0);
 			if (reports.childNodes.length > 0) {
 				reports.insertBefore(report, reports.firstChild);
 			} else {
