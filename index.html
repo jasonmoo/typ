@@ -51,8 +51,7 @@
 	<img id="keyboard" src="keybard_blk.jpg" />
 	<div id="reports"></div>
 	<footer>
-		<a href="https://github.com/jasonmoo/typ">typ</a>,
-		<script>document.write((new Date).getFullYear())</script>,
+		<a href="https://github.com/jasonmoo/typ">typ</a>, 2013,
 		<a href="http://opensource.org/licenses/MIT">MIT</a>
 	</footer>
 </body>
@@ -67,16 +66,16 @@
 	var keys = {
 		// number row 	               // top row                      // middle row                 // bottom row                  // command row
 		"U+0060": [44,137],  /* ` */   "U+0009": [58,187],  /* Tab */ "CapsLock": [62,239],          "LShift": [51,287],  /* Left Shift */
-		"U+0031": [97,137],  /* 1 */   "U+0051": [123,187], /* Q */   "U+0041": [137,239], /* A */   "U+005A": [163,287], /* Z */   "Control": [99,341],  /* Control */
-		"U+0032": [149,137], /* 2 */   "U+0057": [177,187], /* W */   "U+0053": [191,239], /* S */   "U+0058": [216,287], /* X */   "LAlt":    [150,341], /* Left Alt */
-		"U+0033": [203,137], /* 3 */   "U+0045": [229,187], /* E */   "U+0044": [242,239], /* D */   "U+0043": [267,287], /* C */   "LMeta":   [206,341], /* Left Meta */
-		"U+0034": [255,137], /* 4 */   "U+0052": [280,187], /* R */   "U+0046": [293,239], /* F */   "U+0056": [321,287], /* V */   "U+0020":  [368,341], /* Space */
-		"U+0035": [307,137], /* 5 */   "U+0054": [334,187], /* T */   "U+0047": [347,239], /* G */   "U+0042": [374,287], /* B */   "RMeta":   [535,341], /* Right Meta */
-		"U+0036": [360,137], /* 6 */   "U+0059": [386,187], /* Y */   "U+0048": [400,239], /* H */   "U+004E": [425,287], /* N */   "RAlt":    [595,341], /* Right Alt */
-		"U+0037": [412,137], /* 7 */   "U+0055": [437,187], /* U */   "U+004A": [451,239], /* J */   "U+004D": [475,287], /* M */   "Left":    [649,357], /* Left */
-		"U+0038": [464,137], /* 8 */   "U+0049": [490,187], /* I */   "U+004B": [503,239], /* K */   "U+002C": [532,287], /* , */   "Right":   [752,358], /* Right */
-		"U+0039": [517,137], /* 9 */   "U+004F": [542,187], /* O */   "U+004C": [556,239], /* L */   "U+002E": [584,287], /* . */   "Down":    [700,357], /* Down */
-		"U+0030": [569,137], /* 0 */   "U+0050": [594,187], /* P */   "U+003B": [610,239], /* ; */   "U+002F": [635,287], /* ? */   "Up":      [701,329], /* Up */
+		"U+0031": [97,137],  /* 1 */   "U+0051": [123,187], /* Q */   "U+0041": [137,239], /* A */   "U+005A": [163,287], /* Z */   "Control":    [99,341],  /* Control */
+		"U+0032": [149,137], /* 2 */   "U+0057": [177,187], /* W */   "U+0053": [191,239], /* S */   "U+0058": [216,287], /* X */   "LAlt":       [150,341], /* Left Alt */
+		"U+0033": [203,137], /* 3 */   "U+0045": [229,187], /* E */   "U+0044": [242,239], /* D */   "U+0043": [267,287], /* C */   "LMeta":      [206,341], /* Left Meta */
+		"U+0034": [255,137], /* 4 */   "U+0052": [280,187], /* R */   "U+0046": [293,239], /* F */   "U+0056": [321,287], /* V */   "U+0020":     [368,341], /* Space */
+		"U+0035": [307,137], /* 5 */   "U+0054": [334,187], /* T */   "U+0047": [347,239], /* G */   "U+0042": [374,287], /* B */   "RMeta":      [535,341], /* Right Meta */
+		"U+0036": [360,137], /* 6 */   "U+0059": [386,187], /* Y */   "U+0048": [400,239], /* H */   "U+004E": [425,287], /* N */   "RAlt":       [595,341], /* Right Alt */
+		"U+0037": [412,137], /* 7 */   "U+0055": [437,187], /* U */   "U+004A": [451,239], /* J */   "U+004D": [475,287], /* M */   "ArrowLeft":  [649,357], /* Left */
+		"U+0038": [464,137], /* 8 */   "U+0049": [490,187], /* I */   "U+004B": [503,239], /* K */   "U+002C": [532,287], /* , */   "ArrowRight": [752,358], /* Right */
+		"U+0039": [517,137], /* 9 */   "U+004F": [542,187], /* O */   "U+004C": [556,239], /* L */   "U+002E": [584,287], /* . */   "ArrowDown":  [700,357], /* Down */
+		"U+0030": [569,137], /* 0 */   "U+0050": [594,187], /* P */   "U+003B": [610,239], /* ; */   "U+002F": [635,287], /* ? */   "ArrowUp":    [701,329], /* Up */
 		"U+002D": [623,137], /* - */   "U+005B": [647,187], /* [ */   "U+0027": [660,239], /* ' */   "RShift": [713,287], /* Right Shift */
 		"U+003D": [676,137], /* = */   "U+005D": [699,187], /* ] */   "U+005C": [712,239], /* \ */
 		"U+0008": [737,137], /* Backspace */  "Enter":  [753,187]
@@ -101,22 +100,34 @@
 	}
 
 	function get_identifier(e) {
-		switch (e.keyIdentifier) {
+		switch (e.key) {
 			case "Meta":
 				switch (e.location) {
-					case 1:	return "L"+e.keyIdentifier;
-					case 0:	return "R"+e.keyIdentifier;
+					case 1:	return "L"+e.key;
+					case 0:	return "R"+e.key;
 					default: break;
 				}
 			case "Shift":
 			case "Alt":
 				switch (e.location) {
-					case 1:	return "L"+e.keyIdentifier;
-					case 2:	return "R"+e.keyIdentifier;
+					case 1:	return "L"+e.key;
+					case 2:	return "R"+e.key;
 					default: break;
 				}
+			case "Backspace":
+				return "U+0008";
+			case "Tab":
+				return "U+0009";
+			case "Control":
+			case "ArrowLeft":
+			case "ArrowRight":
+			case "ArrowDown":
+			case "ArrowUp":
+			case "Enter":
+			case "CapsLock":
+				return e.key;
 		}
-		return e.keyIdentifier;
+		return ("U+00"+ e.key.toUpperCase().codePointAt(0).toString(16)).toUpperCase();
 	}
 
 	function capture_key_event(e) {
@@ -128,7 +139,6 @@
 			type: e.type,
 			id:   get_identifier(e),
 			c:    String.fromCharCode(e.which),
-			utf:  e.keyIdentifier,
 			mark: performance.now()
 		});
 		clearTimeout(update.timeout);
@@ -154,7 +164,7 @@
 							total = (end.mark - start.mark).toFixed(2);
 
 						var node = document.createElement('span');
-						node.innerHTML = (start.c || start.utf || "&nbsp;") + "<span>" + (total) + "ms</span>";
+						node.innerHTML = (start.c || "&nbsp;") + "<span>" + (total) + "ms</span>";
 						node.style.zIndex = i;
 						node.style.left = start.mark-offset + "px";
 						node.style.padding = total/2 + "px";
